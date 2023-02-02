@@ -1,56 +1,48 @@
+import { Grid } from '@mui/material';
 import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import { Layout } from './components/common/Layout';
+import { Header } from './components/Header';
+import { NotFound } from './components/NotFound';
+import { Game } from './components/pages/Game/Game';
+import { Lobby } from './components/pages/Lobby/Lobby';
+import { Public } from './components/pages/Public/Public';
+import { Login } from './features/auth/Login';
+import RequireAuth from './features/auth/RequireAuth';
+import { useAppSelector } from './app/hooks';
 
 function App() {
+  const connectionErrors = useAppSelector(state => state.connection.errors);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
+      <Grid container direction="column" gap={4}>
+        <Grid item>
+          <Header>TicTacToeOnline</Header>
+        </Grid>
+        {connectionErrors?.map(error => (
+          <Grid item>{error}</Grid>
+        ))}
+        <Grid item>
+          <Routes>
+            <Route path="/" element={<Layout />} >
+              {/* public routes */}
+              <Route index element={<Public />} />
+              <Route path="login" element={<Login />} />
+              {/* <Route path="lobby" element={<Lobby joinRoom={joinRoom} createRoom={createRoom} createRoomByAnonymous={createRoomByAnonymous} />} /> */}
+
+              {/* protected routes */}
+              <Route element={<RequireAuth/>}>
+                  <Route path="lobbyAuth" element={<Lobby />} />
+              </Route>
+
+              <Route path="tictactoe/:id" element={<Game />} />
+
+            </Route>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Grid>
+      </Grid>
     </div>
   );
 }

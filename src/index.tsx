@@ -5,15 +5,22 @@ import { store } from './app/store';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import './index.css';
+import theme from "./theme";
+import ThemeProvider from "@mui/material/styles/ThemeProvider";
+import { BrowserRouter } from "react-router-dom";
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ThemeProvider theme={theme}>
+            <App />
+          </ThemeProvider>
+        </BrowserRouter>
+      </Provider>
   </React.StrictMode>
 );
 
