@@ -1,7 +1,6 @@
 import React, { ReactNode } from 'react'
 import { Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { TypographyProps } from '@mui/system';
 
 const TypographyCustomization = styled(Typography)(({ theme }) => ({
     fontFamily: "Permanent Marker",

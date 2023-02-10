@@ -1,5 +1,6 @@
 import { IConnectionInfo } from './../../models/connectionInfo';
 import { createSlice } from "@reduxjs/toolkit";
+import { deleteEmptyField } from '../../app/objectService';
 
 const connectionSlice = createSlice({
     name: "player",
@@ -9,16 +10,15 @@ const connectionSlice = createSlice({
       errors: []
     } as IConnectionInfo,
     reducers: {
-      setConnection(state, action) {
-        Object.keys(action.payload).forEach(
-          (key) => action.payload[key] === null && delete action.payload[key]
-        );
+      setConnectionInfo(state, action) {
+        deleteEmptyField(action);
+        state = Object.assign(state, action.payload);
       },
     },
   });
   
   export default connectionSlice.reducer;
   export const {
-    setConnection
+    setConnectionInfo
     } = connectionSlice.actions;
   
